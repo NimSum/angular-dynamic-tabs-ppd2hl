@@ -33,8 +33,6 @@ import { TabComponent } from './tab.component';
   ],
 })
 export class TabsComponent implements AfterContentInit {
-  dynamicTabs: TabComponent[] = [];
-
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
   /*
@@ -60,8 +58,6 @@ export class TabsComponent implements AfterContentInit {
   selectTab(tab: TabComponent) {
     // deactivate all tabs
     this.tabs.toArray().forEach((tab) => (tab.active = false));
-    this.dynamicTabs.forEach((tab) => (tab.active = false));
-
     // activate the tab the user has clicked on.
     tab.active = true;
   }
