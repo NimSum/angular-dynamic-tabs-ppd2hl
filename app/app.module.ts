@@ -3,23 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tabs/tab.component';
-import { DynamicTabsDirective } from './tabs/dynamic-tabs.directive';
-import { PeopleListComponent } from './people/people-list.component';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TabsComponent,
-    TabComponent,
-    DynamicTabsDirective,
-    PeopleListComponent
-  ],
+  declarations: [AppComponent, TabsComponent, TabComponent],
   imports: [BrowserModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
   // register the dynamic components here
-  entryComponents: [TabComponent]
+  entryComponents: [TabComponent],
 })
 export class AppModule {}

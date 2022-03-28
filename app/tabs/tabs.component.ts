@@ -8,12 +8,9 @@ import {
   ContentChildren,
   QueryList,
   AfterContentInit,
-  ViewChild,
-  ComponentFactoryResolver,
 } from '@angular/core';
 
 import { TabComponent } from './tab.component';
-import { DynamicTabsDirective } from './dynamic-tabs.directive';
 
 @Component({
   selector: 'my-tabs',
@@ -22,13 +19,8 @@ import { DynamicTabsDirective } from './dynamic-tabs.directive';
       <li *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
         <a href="#">{{tab.title}}</a>
       </li>
-      <!-- dynamic tabs -->
-      <li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" [class.active]="tab.active">
-        <a href="#">{{tab.title}} <span class="tab-close" *ngIf="tab.isCloseable" (click)="closeTab(tab)">x</span></a>
-      </li>
     </ul>
     <ng-content></ng-content>
-    <ng-template dynamic-tabs #container></ng-template>
   `,
   styles: [
     `
@@ -45,8 +37,6 @@ export class TabsComponent implements AfterContentInit {
 
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
-  @ViewChild(DynamicTabsDirective) dynamicTabPlaceholder: DynamicTabsDirective;
-
   /*
     Alternative approach of using an anchor directive
     would be to simply get hold of a template variable
@@ -54,7 +44,7 @@ export class TabsComponent implements AfterContentInit {
   */
   // @ViewChild('container', {read: ViewContainerRef}) dynamicTabPlaceholder;
 
-  constructor(private _componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor() {}
 
   // contentChildren are set
   ngAfterContentInit() {
@@ -65,35 +55,6 @@ export class TabsComponent implements AfterContentInit {
     if (activeTabs.length === 0) {
       this.selectTab(this.tabs.first);
     }
-  }
-
-  openTab(title: string, template, data, isCloseable = false) {
-    // get a component factory for our TabComponent
-    const componentFactory =
-      this._componentFactoryResolver.resolveComponentFactory(TabComponent);
-
-    // fetch the view container reference from our anchor directive
-    const viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
-
-    // alternatively...
-    // let viewContainerRef = this.dynamicTabPlaceholder;
-
-    // create a component instance
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-
-    // set the according properties on our component instance
-    const instance: TabComponent = componentRef.instance as TabComponent;
-    instance.title = title;
-    instance.template = template;
-    instance.dataContext = data;
-    instance.isCloseable = isCloseable;
-
-    // remember the dynamic component for rendering the
-    // tab navigation headers
-    this.dynamicTabs.push(componentRef.instance as TabComponent);
-
-    // set it active
-    this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);
   }
 
   selectTab(tab: TabComponent) {

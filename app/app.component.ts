@@ -1,6 +1,5 @@
 //our root app component
 import { Component, ViewChild } from '@angular/core';
-
 import { TabsComponent } from './tabs/tabs.component';
 
 @Component({
@@ -18,8 +17,4 @@ import { TabsComponent } from './tabs/tabs.component';
     </my-tabs>
   `,
 })
-export class AppComponent {
-  @ViewChild('personEdit') editPersonTemplate;
-  @ViewChild('about') aboutTemplate;
-  @ViewChild(TabsComponent) tabsComponent;
-}
+export class AppComponent {}
